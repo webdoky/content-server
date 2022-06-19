@@ -285,10 +285,6 @@ const registry = {
     const mapEntries = Array.from(mapOfOriginalContent.entries());
 
     for (const [slug, path] of mapEntries) {
-      if (/\(/.test(path)) {
-        // TODO: fix vue router giving me an error on such paths
-        continue;
-      }
       if (path.slice(-2) === 'md' || path.slice(-4) === 'html') {
         // TODO: we'll need images here
         tasks.push(this.processPage(slug, mapOfOriginalContent, sectionName));

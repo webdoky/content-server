@@ -90,6 +90,5 @@ export const getNewCommits = async (
     };
   }
 
-  return {
-  };
+  return {};
 };
