@@ -24,6 +24,7 @@ export default class ContentRegistry {
         references,
         updatesInOriginalRepo,
         originalPath,
+        translationLastUpdatedAt,
       } = page;
 
       // Check if links in the content lead to sensible destinations
@@ -52,7 +53,7 @@ export default class ContentRegistry {
         updatesInOriginalRepo,
         section,
         sourceLastUpdatetAt: 0,
-        translationLastUpdatedAt: 0,
+        translationLastUpdatedAt,
       });
     }
 

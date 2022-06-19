@@ -331,9 +331,12 @@ const registry = {
       data: { tags = [] },
     } = await this.readContentPage(path);
 
-    const commitInformation = hasLocalizedContent
+    const gitUpdatesInformation = hasLocalizedContent
       ? await getNewCommits(path, registry._options)
-      : [];
+      : {};
+
+    const { newCommits = [], lastUpdatedAt = undefined } =
+      gitUpdatesInformation;
 
     this.contentPages.set(data.slug, {
       content,
@@ -341,9 +344,10 @@ const registry = {
       data,
       tags,
       path: `/${targetLocale}/docs/${data.slug}`,
-      updatesInOriginalRepo: commitInformation,
+      updatesInOriginalRepo: newCommits,
       section: sectionName,
       originalPath: originalFullPath.split(sourceLocale.toLowerCase())[1],
+      translationLastUpdatedAt: lastUpdatedAt,
       sourceType,
     });
     process.stdout.write(

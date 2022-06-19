@@ -519,10 +519,10 @@
     "@typescript-eslint/types" "5.26.0"
     eslint-visitor-keys "^3.3.0"
 
-"@webdoky/yari-ports@2.16.2":
-  version "2.16.2"
-  resolved "https://registry.yarnpkg.com/@webdoky/yari-ports/-/yari-ports-2.16.2.tgz#aff160a85d0383a00dff00f2e2f28475e1e87c0e"
-  integrity sha512-RJ5pPleDQ6YK4WZuIKZ9TJV19X8h3fUjDLfz7ZEDrHtKedUpqV/gC5X1k5reU4kf4/qEKIGcGi7H2F6IBO+4iw==
+"@webdoky/yari-ports@2.16.3":
+  version "2.16.3"
+  resolved "https://registry.yarnpkg.com/@webdoky/yari-ports/-/yari-ports-2.16.3.tgz#d14cccd736cc728d16643e45a426f9e7284aeb38"
+  integrity sha512-aqVO/H7vNw2PNDChLaKwrPzkotRtmeurTJzpiGZPCvtAVVJ/h5V1b6hXGgAttCHlkh1G0z31sSFwQgguQ7n0kw==
   dependencies:
     "@mdn/browser-compat-data" "^4.1.2"
     "@mdn/yari" "^0.4.804"

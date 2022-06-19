@@ -49,6 +49,11 @@ const getCommitsSince = async (lastCommitDate, filePath, repoPath) => {
   return stdout;
 };
 
+interface GitUpdates {
+  newCommits?: string[];
+  lastUpdatedAt?: string;
+}
+
 export const getNewCommits = async (
   file,
   config: {
@@ -57,7 +62,7 @@ export const getNewCommits = async (
     targetLocale: string;
     sourceLocale: string;
   },
-) => {
+): Promise<GitUpdates> => {
   const {
     pathToOriginalContent,
     pathToLocalizedContent,
@@ -79,8 +84,12 @@ export const getNewCommits = async (
       pathToOriginalRepo,
     );
 
-    return lastCommits.split('\n').filter(Boolean);
+    return {
+      newCommits: lastCommits.split('\n').filter(Boolean),
+      lastUpdatedAt: lastCommitDate,
+    };
   }
 
-  return [];
+  return {
+  };
 };
