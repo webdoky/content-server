@@ -84,32 +84,25 @@ const registry = {
       pathToLocalizedContent,
     } = registry._options;
 
-    // const cssSourcePages = await walk(
-    //   `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/css`,
-    // );
-
-    const cssSourcePages = [];
+    const cssSourcePages = await walk(
+      `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/css`,
+    );
 
     const htmlSourcePages = await walk(
       `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/html`,
     );
 
-    const javaScriptSourcePages = [];
+    const javaScriptSourcePages = await walk(
+      `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/javascript`,
+    );
 
-    // const javaScriptSourcePages = await walk(
-    //   `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/javascript`,
-    // );
+    const svgSourcePages = await walk(
+      `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/svg`,
+    );
 
-    const svgSourcePages = [];
-
-    // const svgSourcePages = await walk(
-    //   `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/svg`,
-    // );
-
-    const guideSourcePages = [];
-    // const guideSourcePages = await walk(
-    //   `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/guide`,
-    // );
+    const guideSourcePages = await walk(
+      `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/guide`,
+    );
 
     const otherSourcePages = await walk(
       `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/`,
