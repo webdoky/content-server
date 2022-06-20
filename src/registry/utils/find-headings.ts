@@ -1,5 +1,5 @@
 import { visit } from 'unist-util-visit';
-import { HtmlNode } from './extract-description';
+import { HtmlNode } from './interfaces';
 
 const levels = {
   h2: 2,

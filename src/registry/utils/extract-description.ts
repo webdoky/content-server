@@ -1,9 +1,5 @@
-import { visit, Node } from 'unist-util-visit';
-
-export type HtmlNode = Node & {
-  tagName?: string;
-  properties?: { id?: string };
-};
+import { visit } from 'unist-util-visit';
+import { HtmlNode } from './interfaces';
 
 const getTextContent = (node) => {
   let textContent = '';

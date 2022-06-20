@@ -9,6 +9,9 @@ import findFragments from './utils/find-fragments';
 import findReferences from './utils/find-references';
 import { htmlParseAndProcess } from './contentProcessors';
 import { promises as fs } from 'fs';
+import extractLiveSamples, {
+  ExtractedSample,
+} from './utils/extract-live-sample';
 
 const generateSlugToPathMap = (paths, locale): Map<string, string> => {
   const map = new Map<string, string>();
@@ -50,6 +53,7 @@ const registry = {
   _options: undefined,
   localizedContentMap: undefined,
   contentPages: new Map(),
+  liveSamples: new Set(),
   existingInternalDestinations: new Set(),
   internalLinkDestinations: new Set(),
 
@@ -67,6 +71,10 @@ const registry = {
     return this.contentPages.get(slug);
   },
 
+  getLiveSamples() {
+    return this.liveSamples.values();
+  },
+
   async init(options: RegistryInitOptions) {
     registry._options = options;
     const {
@@ -76,25 +84,32 @@ const registry = {
       pathToLocalizedContent,
     } = registry._options;
 
-    const cssSourcePages = await walk(
-      `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/css`,
-    );
+    // const cssSourcePages = await walk(
+    //   `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/css`,
+    // );
+
+    const cssSourcePages = [];
 
     const htmlSourcePages = await walk(
       `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/html`,
     );
 
-    const javaScriptSourcePages = await walk(
-      `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/javascript`,
-    );
+    const javaScriptSourcePages = [];
 
-    const svgSourcePages = await walk(
-      `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/svg`,
-    );
+    // const javaScriptSourcePages = await walk(
+    //   `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/javascript`,
+    // );
 
-    const guideSourcePages = await walk(
-      `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/guide`,
-    );
+    const svgSourcePages = [];
+
+    // const svgSourcePages = await walk(
+    //   `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/svg`,
+    // );
+
+    const guideSourcePages = [];
+    // const guideSourcePages = await walk(
+    //   `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/guide`,
+    // );
 
     const otherSourcePages = await walk(
       `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/`,
@@ -237,6 +252,25 @@ const registry = {
       fragments.forEach((id) => {
         this.internalLinkDestinations.add(`${path}/#${id}`);
       });
+
+      // live samples
+      let extractedLiveSamples = {};
+
+      if (hasLocalizedContent) {
+        const htmlAst = htmlParseAndProcess.parse(content);
+        extractedLiveSamples = extractLiveSamples(htmlAst);
+
+        Object.values(extractedLiveSamples).forEach(
+          (sample: ExtractedSample) => {
+            if (!Object.values(sample.content).length) {
+              console.warn(
+                `\x1b[33mMissing live sample content for ${sample.id}, on ${slug} page\x1b[0m`,
+              );
+            }
+            this.liveSamples.add(sample);
+          },
+        );
+      }
 
       this.contentPages.set(slug, {
         content: hasLocalizedContent ? content : '',

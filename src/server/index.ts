@@ -4,6 +4,7 @@ import ContentRegistry from './contentRegistry';
 enum Urls {
   'getBySlug' = '/getBySlug',
   'getAll' = '/getAll',
+  'getAllSamples' = '/getAllSamples',
 }
 
 const PORT = 3010;
@@ -20,6 +21,7 @@ WebDoky content server.
 Supports two types of requests:
 <pre>/getBySlug?query=%yourSlug%</pre> — retrieves a page by it's slug
 <pre>/getAll?fields=%your,comma,separated,optionsl,fields%</pre> — retrieves all pages. If fields parameter is specified - then it only selects specified fields.
+<pre>/getAllSamples</pre> — retrieves all live samples.
 `;
 const wrapMessage = (message) =>
   JSON.stringify({
@@ -75,6 +77,9 @@ const createHttpRequestProcessor = (contentRegistry) => {
             res.end(wrapData(pageEntry));
           }
         }
+      } else if (pathname === Urls.getAllSamples) {
+        res.writeHead(Status.ok);
+        res.end(wrapData(contentRegistry.getLiveSamples()));
       } else {
         // Default route, just return help text
         res.writeHead(Status.ok);

@@ -1,17 +1,20 @@
 import { ContentItem } from './interfaces';
 import registry, { RegistryInitOptions } from '../registry/index';
+import { ExtractedSample } from '../registry/utils/extract-live-sample';
 
 const isExternalLink = (ref) =>
   ref.startsWith('http://') || ref.startsWith('https://');
 
 export default class ContentRegistry {
   registry = new Map<string, ContentItem>();
+  sourceRegistry;
 
   async init(options: RegistryInitOptions) {
     let orphanedLinksCount = 0;
 
     // Loading registry with content pages
     await registry.init(options);
+    this.sourceRegistry = registry;
 
     for (const page of registry.getPagesData()) {
       const {
@@ -72,5 +75,9 @@ export default class ContentRegistry {
 
   getBySlug(id): ContentItem {
     return this.registry.get(id);
+  }
+
+  getLiveSamples(): ExtractedSample[] {
+    return Array.from(this.sourceRegistry.getLiveSamples());
   }
 }

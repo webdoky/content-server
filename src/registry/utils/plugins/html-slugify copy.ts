@@ -4,7 +4,7 @@ import { toString } from 'mdast-util-to-string';
 import slugger from 'github-slugger';
 import { visit } from 'unist-util-visit';
 import cyrillicToTranslit from 'cyrillic-to-translit-js';
-import { HtmlNode } from '../extract-description';
+import { HtmlNode } from '../interfaces';
 
 const slugs = slugger();
 
