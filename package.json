@@ -14,8 +14,7 @@
     "eslint-config-prettier": "~8.5",
     "prettier": "~2.6",
     "rimraf": "~3.0",
-    "tsutils": "~3.21",
-    "typescript": "~4.7"
+    "tsutils": "~3.21"
   },
   "scripts": {
     "start": "node --experimental-specifier-resolution=node build/src/_starter.js",
@@ -55,7 +54,8 @@
     "tslib": "~2.4",
     "unified": "^10.1.1",
     "unist-util-visit": "^4.1.0",
-    "unist-util-visit-parents": "^5.1.0"
+    "unist-util-visit-parents": "^5.1.0",
+    "typescript": "~4.7"
   },
   "volta": {
     "node": "16.13.0"
