@@ -251,7 +251,13 @@ const registry = {
 
       if (hasLocalizedContent) {
         const htmlAst = htmlParseAndProcess.parse(content);
-        extractedLiveSamples = extractLiveSamples(htmlAst);
+
+        try {
+          extractedLiveSamples = extractLiveSamples(htmlAst);
+        } catch (error) {
+          console.log('Got problem while extracting live samples for:', slug);
+          throw error;
+        }
 
         Object.values(extractedLiveSamples).forEach(
           (sample: ExtractedSample) => {

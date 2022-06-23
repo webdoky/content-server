@@ -25,6 +25,7 @@
     "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "yarn run clean && tsc -p tsconfig.release.json",
     "postinstall": "yarn build",
+    "postbuild": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .ts --ext .mts",
     "test": "ava --coverage",
     "prettier": "prettier --config .prettierrc --write .",

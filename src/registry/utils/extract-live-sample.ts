@@ -94,7 +94,8 @@ const extractLiveSamples = (ast): { [key: string]: ExtractedSample } => {
   visitParents(
     ast,
     (node: HtmlNode) => !!collectedSamples[node.properties?.id],
-    (node: HtmlNode, [ancestor]: HtmlNode[]) => {
+    (node: HtmlNode, relatives: HtmlNode[]) => {
+      const ancestor = relatives[relatives.length - 1];
       if (headingTags.includes(node.tagName)) {
         // Found a header. Our samples are in this section
         const { children } = ancestor;
@@ -138,7 +139,6 @@ const extractLiveSamples = (ast): { [key: string]: ExtractedSample } => {
         // TODO: support other types of content, than just html?
       }
     },
-    true,
   );
 
   return collectedSamples;
