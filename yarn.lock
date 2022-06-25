@@ -528,10 +528,10 @@
   resolved "https://registry.yarnpkg.com/@use-it/interval/-/interval-1.0.0.tgz#c42c68f22ca29a0dc929041746373d94496d2b3a"
   integrity sha512-WQFcnSt/xM/mS8ZtJ0ut5lhPrl+V0HDPPcI/J0eUClsfiD+/r8A7IeW/pVcfpSVGWRmN3+WnjNteWuKyWs2WZg==
 
-"@webdoky/yari-ports@2.18.0":
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/@webdoky/yari-ports/-/yari-ports-2.18.0.tgz#73343180c1ed014686da1890e0394a0f7a944a36"
-  integrity sha512-G9wKSlEMJ4+mtCuW4qNRtos/m78GAReNNNoUqFMikLDhi/AOEqNVZfM7JpiAEhkns5lnj+u6UAnOoYFI8ibOaw==
+"@webdoky/yari-ports@2.18.1":
+  version "2.18.1"
+  resolved "https://registry.yarnpkg.com/@webdoky/yari-ports/-/yari-ports-2.18.1.tgz#3e7dd99f438ced135030566787a5b8e5099ee612"
+  integrity sha512-nv+XGSFN9m59Cthao16TDV93RmBOYa/Q+4ghk3XiSXhxlGIqzVwj/b6tDlnXCL4GImkeAf7o9xIXtlPDu8U0EA==
   dependencies:
     "@mdn/browser-compat-data" "^4.1.2"
     "@mdn/yari" "^1.7.0"
