@@ -1,5 +1,5 @@
 import test from 'ava';
-import registry from './index';
+import Registry from './index';
 import { runMacros } from './macros-runner';
 
 const mdContent = `**JavaScript** (**JS**) &mdash; це невибаглива до ресурсів мова програмування з {{Glossary("First-class Function", "функціями першого класу")}}, код якої інтерпретується, або компілюється ["на льоту"](https://uk.wikipedia.org/wiki/JIT-%D0%BA%D0%BE%D0%BC%D0%BF%D1%96%D0%BB%D1%8F%D1%86%D1%96%D1%8F). Хоча JavaScript насамперед відома як скриптова мова для вебсторінок, вона також використовується у [багатьох не браузерних середовищах](https://uk.wikipedia.org/wiki/JavaScript#%D0%97%D0%B0%D1%81%D1%82%D0%BE%D1%81%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F), як от: {{Glossary("Node.js")}}, [Apache CouchDB](https://couchdb.apache.org/) та [Adobe Acrobat](https://opensource.adobe.com/dc-acrobat-sdk-docs/acrobatsdk/). JavaScript — це {{Glossary("Prototype-based programming", "прототипна")}}, однопотокова динамічна мова, що має декілька парадигм та підтримує об'єктноорієнтований, та декларативні (зокрема функційне програмування) стилі. Більше [про JavaScript](/uk/docs/Web/JavaScript/About_JavaScript).
@@ -55,6 +55,8 @@ const mixedContentInHtml = `<p><strong>JavaScript</strong> (<strong>JS</strong>)
 <p>Цей розділ присвячено саме мові JavaScript, і він не стосується тонкощів роботи з вебсторінками, чи іншими середовищами для виконання JavaScript. Інформацію стосовно конкретних <a href="/uk/docs/Glossary/API">API</a> вебсторінок дивіться у <a href="/uk/docs/Web/API">веб API</a> та <a href="/uk/docs/Glossary/DOM">DOM</a>.</p>`;
 
 test('mdProcessor should parse markdown properly', async (t) => {
+  const registry = new Registry();
+
   const processedContent = await registry.processMdPage(mdContent);
 
   t.assert(
@@ -86,11 +88,11 @@ const sourceMd = `## Специфікації
 {{Specifications}}`;
 
 // const processedMdSample = `<h2 id="spetsyfikatsii"><a aria-hidden="true" tabindex="-1" href="#spetsyfikatsii"><span class="icon icon-link"></span></a>Специфікації</h2>
-// <table className="table--standard">
+// <table class="table--standard">
 // `;
 
 const processedMdSample = `<h2 id="spetsyfikatsii"><a aria-hidden="true" tabindex="-1" href="#spetsyfikatsii"><span class="icon icon-link"></span></a>Специфікації</h2>
-<table className="table--standard">
+<table class="table--standard">
           <thead>
             <tr>
               <th scope="col">Специфікація</th>
@@ -120,6 +122,8 @@ test('mdProcessor should run two subsequent transformations', async (t) => {
     slug: 'testSlug',
     browserCompat: 'javascript.builtins.String.blink',
   });
+
+  const registry = new Registry();
 
   const { content: processedContent } = await registry.processMdPage(
     expandedMacros,

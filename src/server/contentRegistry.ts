@@ -1,5 +1,5 @@
 import { ContentItem } from './interfaces';
-import registry, { RegistryInitOptions } from '../registry/index';
+import Registry, { RegistryInitOptions } from '../registry/index';
 import { ExtractedSample } from '../registry/utils/extract-live-sample';
 
 const isExternalLink = (ref) =>
@@ -7,16 +7,16 @@ const isExternalLink = (ref) =>
 
 export default class ContentRegistry {
   registry = new Map<string, ContentItem>();
-  sourceRegistry;
+  sourceRegistry?: Registry;
 
   async init(options: RegistryInitOptions) {
     let orphanedLinksCount = 0;
 
     // Loading registry with content pages
-    await registry.init(options);
-    this.sourceRegistry = registry;
+    this.sourceRegistry = new Registry();
+    await this.sourceRegistry.init(options);
 
-    for (const page of registry.getPagesData()) {
+    for (const page of this.sourceRegistry.getPagesData()) {
       const {
         content,
         description,
@@ -31,7 +31,7 @@ export default class ContentRegistry {
       } = page;
 
       // Check if links in the content lead to sensible destinations
-      const { internalLinkDestinations } = registry;
+      const { internalLinkDestinations } = this.sourceRegistry;
       references.forEach((refItem) => {
         if (
           !isExternalLink(refItem) &&

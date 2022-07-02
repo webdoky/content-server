@@ -49,40 +49,40 @@ export interface RegistryInitOptions {
   pathToLocalizedContent: string;
 }
 
-const registry = {
-  _options: undefined,
-  localizedContentMap: undefined,
-  contentPages: new Map(),
-  liveSamples: new Set(),
-  existingInternalDestinations: new Set(),
-  internalLinkDestinations: new Set(),
+class Registry {
+  _options?: RegistryInitOptions;
+  localizedContentMap?: Map<string, string>;
+  contentPages = new Map();
+  liveSamples?: Set<ExtractedSample> = new Set();
+  existingInternalDestinations = new Set();
+  internalLinkDestinations = new Set();
 
   // counters for visual notifications
-  expandedMacrosFor: 0,
-  estimatedMacrosExpansionAmount: 0,
-  pagePostProcessedAmount: 0,
-  estimatedContentPagesAmount: 0,
+  expandedMacrosFor = 0;
+  estimatedMacrosExpansionAmount = 0;
+  pagePostProcessedAmount = 0;
+  estimatedContentPagesAmount = 0;
 
   getPagesData() {
     return this.contentPages.values();
-  },
+  }
 
-  getPageBySlug(slug) {
+  getPageBySlug(slug: string) {
     return this.contentPages.get(slug);
-  },
+  }
 
   getLiveSamples() {
     return this.liveSamples.values();
-  },
+  }
 
   async init(options: RegistryInitOptions) {
-    registry._options = options;
+    this._options = options;
     const {
       sourceLocale,
       pathToOriginalContent,
       targetLocale,
       pathToLocalizedContent,
-    } = registry._options;
+    } = this._options;
 
     const cssSourcePages = await walk(
       `${pathToOriginalContent}/${sourceLocale.toLowerCase()}/web/css`,
@@ -305,10 +305,10 @@ const registry = {
     console.log(
       `Content has been rendered, ${this.pagePostProcessedAmount} processed`,
     );
-  },
+  }
 
   async processSection(originalPaths, sectionName) {
-    const { sourceLocale } = registry._options;
+    const { sourceLocale } = this._options;
 
     const mapOfOriginalContent = generateSlugToPathMap(
       originalPaths,
@@ -325,10 +325,10 @@ const registry = {
     }
 
     return tasks;
-  },
+  }
 
   async processPage(key, mapOfOriginalContent, sectionName) {
-    const { sourceLocale, targetLocale } = registry._options;
+    const { sourceLocale, targetLocale } = this._options;
     const mapOfLocalizedContent = this.localizedContentMap;
     let mdKey;
     let htmlKey;
@@ -361,7 +361,7 @@ const registry = {
     } = await this.readContentPage(path);
 
     const gitUpdatesInformation = hasLocalizedContent
-      ? await getNewCommits(path, registry._options)
+      ? await getNewCommits(path, this._options)
       : {};
 
     const { newCommits = [], lastUpdatedAt = undefined } =
@@ -382,7 +382,7 @@ const registry = {
     process.stdout.write(
       `Processed ${this.contentPages.size} of ${this.estimatedContentPagesAmount} pages\r`,
     );
-  },
+  }
 
   async readContentPage(path) {
     const input = await fs.readFile(path);
@@ -394,7 +394,7 @@ const registry = {
       data,
       sourceType: path.slice(-3) === '.md' ? 'md' : 'html',
     };
-  },
+  }
 
   async processMdPage(mdContent) {
     const parsedInput = mdParseAndProcess.parse(mdContent);
@@ -416,7 +416,7 @@ const registry = {
       references,
       description,
     };
-  },
+  }
 
   async processHtmlPage(htmlContent) {
     const parsedInputAst = htmlParseAndProcess.parse(htmlContent);
@@ -436,7 +436,7 @@ const registry = {
       references,
       description,
     };
-  },
-};
+  }
+}
 
-export default registry;
+export default Registry;
