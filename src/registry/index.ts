@@ -55,7 +55,8 @@ class Registry {
   contentPages = new Map();
   liveSamples?: Set<ExtractedSample> = new Set();
   existingInternalDestinations = new Set();
-  internalLinkDestinations = new Set();
+  unlocalizedInternalDests: Set<string> = new Set();
+  translatedInternalDests: Set<string> = new Set();
 
   // counters for visual notifications
   expandedMacrosFor = 0;
@@ -241,10 +242,7 @@ class Registry {
         !hasLocalizedContent, // Don't run macros for non-localized pages
       );
 
-      this.internalLinkDestinations.add(`${path}/`);
-      fragments.forEach((id) => {
-        this.internalLinkDestinations.add(`${path}/#${id}`);
-      });
+      this.rememberLinkDestinations(path, fragments, hasLocalizedContent);
 
       // live samples
       let extractedLiveSamples = {};
@@ -325,6 +323,24 @@ class Registry {
     }
 
     return tasks;
+  }
+
+  rememberLinkDestinations(
+    path: string,
+    fragments: Set<string>,
+    isLocalized: boolean,
+  ) {
+    const { translatedInternalDests, unlocalizedInternalDests } = this;
+
+    const destinationSet = isLocalized
+      ? translatedInternalDests
+      : unlocalizedInternalDests;
+
+    destinationSet.add(`${path}/`);
+
+    fragments.forEach((id) => {
+      destinationSet.add(`${path}/#${id}`);
+    });
   }
 
   async processPage(key, mapOfOriginalContent, sectionName) {

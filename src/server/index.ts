@@ -5,6 +5,7 @@ enum Urls {
   'getBySlug' = '/getBySlug',
   'getAll' = '/getAll',
   'getAllSamples' = '/getAllSamples',
+  'getInternalDestinations' = '/getInternalDestinations',
 }
 
 const PORT = 3010;
@@ -22,6 +23,7 @@ Supports two types of requests:
 <pre>/getBySlug?query=%yourSlug%</pre> — retrieves a page by it's slug
 <pre>/getAll?fields=%your,comma,separated,optionsl,fields%</pre> — retrieves all pages. If fields parameter is specified - then it only selects specified fields.
 <pre>/getAllSamples</pre> — retrieves all live samples.
+<pre>/getInternalDestinations</pre> — retrieves all possible working links.
 `;
 const wrapMessage = (message) =>
   JSON.stringify({
@@ -33,7 +35,7 @@ const wrapData = (data) =>
     data,
   });
 
-const createHttpRequestProcessor = (contentRegistry) => {
+const createHttpRequestProcessor = (contentRegistry: ContentRegistry) => {
   return (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const { method } = req;
@@ -80,6 +82,9 @@ const createHttpRequestProcessor = (contentRegistry) => {
       } else if (pathname === Urls.getAllSamples) {
         res.writeHead(Status.ok);
         res.end(wrapData(contentRegistry.getLiveSamples()));
+      } else if (pathname === Urls.getInternalDestinations) {
+        res.writeHead(Status.ok);
+        res.end(wrapData(contentRegistry.getInternalDestinations()));
       } else {
         // Default route, just return help text
         res.writeHead(Status.ok);

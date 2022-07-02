@@ -31,11 +31,13 @@ export default class ContentRegistry {
       } = page;
 
       // Check if links in the content lead to sensible destinations
-      const { internalLinkDestinations } = this.sourceRegistry;
+      const { translatedInternalDests, unlocalizedInternalDests } =
+        this.sourceRegistry;
       references.forEach((refItem) => {
         if (
           !isExternalLink(refItem) &&
-          !internalLinkDestinations.has(refItem)
+          !translatedInternalDests.has(refItem) &&
+          !unlocalizedInternalDests.has(refItem) // Don't count those not translated yet
         ) {
           orphanedLinksCount++;
           console.warn(
@@ -79,5 +81,9 @@ export default class ContentRegistry {
 
   getLiveSamples(): ExtractedSample[] {
     return Array.from(this.sourceRegistry.getLiveSamples());
+  }
+
+  getInternalDestinations(): string[] {
+    return Array.from(this.sourceRegistry.translatedInternalDests);
   }
 }

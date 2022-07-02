@@ -1,8 +1,8 @@
 import { visit } from 'unist-util-visit';
 import { HtmlNode } from './interfaces';
 
-const findFragments = (ast) => {
-  const fragments = new Set();
+const findFragments = (ast): Set<string> => {
+  const fragments: Set<string> = new Set();
 
   visit(
     ast,
