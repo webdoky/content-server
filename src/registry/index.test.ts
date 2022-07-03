@@ -134,3 +134,78 @@ test('mdProcessor should run two subsequent transformations', async (t) => {
     'Content should match parsed sample',
   );
 });
+
+const rawMdWithDlDtSyntax = `### Ексклюзивні атрибути
+
+- \`accept\` (приймання)
+
+  - : Дійсний лише для типу поля введення \`file\`. Атрибут \`accept\` визначає те, які типи файлів можна обрати для контрольного елемента \`file\`. Дивіться тип поля введення {{HTMLElement("input/file", "file")}}.
+
+- \`alt\` (альтернатива)
+
+  - : Дійсний лише для кнопки \`image\`. Атрибут \`alt\` задає альтернативний текст для кнопки, що буде показаний, якщо зображення [\`src\`](#src) немає або його не виходить завантажити. Дивіться тип поля введення {{HTMLElement("input/image", "image")}}.
+`;
+
+const processedMdWithDlDtSyntax = `<h3 id="ekskliuzyvni-atrybuty"><a aria-hidden="true" tabindex="-1" href="#ekskliuzyvni-atrybuty"><span class="icon icon-link"></span></a>Ексклюзивні атрибути</h3>
+<dl>
+<dt id="accept-pryimannia"><code>accept</code> (приймання)</dt>
+<dd><p>Дійсний лише для типу поля введення <code>file</code>. Атрибут <code>accept</code> визначає те, які типи файлів можна обрати для контрольного елемента <code>file</code>. Дивіться тип поля введення {{HTMLElement("input/file", "file")}}.</p></dd>
+<dt id="alt-alternatyva"><code>alt</code> (альтернатива)</dt>
+<dd><p>Дійсний лише для кнопки <code>image</code>. Атрибут <code>alt</code> задає альтернативний текст для кнопки, що буде показаний, якщо зображення <a href="#src"><code>src</code></a> немає або його не виходить завантажити. Дивіться тип поля введення {{HTMLElement("input/image", "image")}}.</p></dd>
+</dl>`;
+
+test('mdProcessor should process custom syntax for dl-dt nodes, with injecting ID attributes', async (t) => {
+  const registry = new Registry();
+
+  const { content: processedContent } = await registry.processMdPage(
+    rawMdWithDlDtSyntax,
+  );
+
+  t.assert(
+    t.deepEqual(processedMdWithDlDtSyntax, processedContent),
+    'Content should match parsed sample',
+  );
+});
+
+const rawMdWithTable = `Атрибути елемента \`<input\` включають [глобальні атрибути HTML](/uk/docs/Web/HTML/Global_attributes), а також:
+
+| Атрибути                            | Тип чи типи                      | Опис                                                                                                               |
+| ----------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| [\`accept\`](#accept)                 | file                             | Вказівка щодо очікуваного типу файлу при виборі файлів до завантаження                                             |
+| [\`alt\`](#alt)                       | image                            | Атрибут \`alt\` для типу зображення. Необхідний для доступності                                                      |`;
+
+const processedMdWithTable = `<p>Атрибути елемента <code>&#x3C;input</code> включають <a href="/uk/docs/Web/HTML/Global_attributes">глобальні атрибути HTML</a>, а також:</p>
+<table>
+<thead>
+<tr>
+<th>Атрибути</th>
+<th>Тип чи типи</th>
+<th>Опис</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#accept"><code>accept</code></a></td>
+<td>file</td>
+<td>Вказівка щодо очікуваного типу файлу при виборі файлів до завантаження</td>
+</tr>
+<tr>
+<td><a href="#alt"><code>alt</code></a></td>
+<td>image</td>
+<td>Атрибут <code>alt</code> для типу зображення. Необхідний для доступності</td>
+</tr>
+</tbody>
+</table>`;
+
+test('mdProcessor should process table syntax', async (t) => {
+  const registry = new Registry();
+
+  const { content: processedContent } = await registry.processMdPage(
+    rawMdWithTable,
+  );
+
+  t.assert(
+    t.deepEqual(processedMdWithTable, processedContent),
+    'Content should match parsed sample',
+  );
+});

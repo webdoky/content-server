@@ -412,7 +412,7 @@ class Registry {
     };
   }
 
-  async processMdPage(mdContent) {
+  async processMdPage(mdContent: string) {
     const parsedInput = mdParseAndProcess.parse(mdContent);
 
     const linkedContentAst = await mdParseAndProcess.run(parsedInput);

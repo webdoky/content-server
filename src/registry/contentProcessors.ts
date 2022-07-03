@@ -6,6 +6,7 @@ import rehypeParse from 'rehype-parse';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeRaw from 'rehype-raw';
 import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
 
 import yariPorts from '@webdoky/yari-ports';
 import { list as defaultListHandler } from 'mdast-util-to-hast/lib/handlers/list';
@@ -13,6 +14,7 @@ import externalLinks from './utils/plugins/external-links';
 import htmlSlugify from './utils/plugins/html-slugify copy';
 
 const { markdown: yariMarkdownUtils } = yariPorts;
+// https://github.com/mdn/yari/blob/b0dbaed4bc4135b51217400f750179b4a3bebc28/markdown/m2h/handlers/dl.js
 const { isDefinitionList, asDefinitionList } = yariMarkdownUtils;
 
 export const htmlParseAndProcess = unified()
@@ -25,6 +27,7 @@ export const htmlParseAndProcess = unified()
 
 export const mdParseAndProcess = unified()
   .use(remarkParse)
+  .use(remarkGfm)
   .use(remarkRehype, {
     handlers: {
       list(h, node) {
